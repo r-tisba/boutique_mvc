@@ -15,9 +15,9 @@
                             <div class="card h-100 border-0 b-tra">
                                 <div class="card-header cardHeaderCat">
                                     <?php if ($_SESSION['idRole'] == '2') { ?>
-                                        <a class="me-1" href="index.php?page=update_cat&cat=<?= $categorie['id']; ?>"><i class="fa fa-solid fa-pen updateIcon" aria-hidden="true"></i></a>
+                                        <a class="me-1" href="index.php?page=update_cat&cat=<?= $categorie['id']; ?>"><i class="fa fa-solid fa-pen updateIconSombre" aria-hidden="true"></i></a>
                                     <?php } ?>
-                                    <h5 class="card-title tLato t25 m-0"><?= $categorie['nom']; ?></h5>
+                                    <h5 class="card-title blanc tLato t25 m-0"><?= $categorie['nom']; ?></h5>
                                     <?php if ($_SESSION['idRole'] == '2') { ?>
                                         <a href="index.php?page=delete_cat&cat=<?= $categorie['id']; ?>"><i class="fa fa-solid fa-trash deleteIcon" aria-hidden="true" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette catégorie ?')"></i></a>
                                     <?php } ?>

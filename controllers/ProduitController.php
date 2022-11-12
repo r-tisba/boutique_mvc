@@ -2,34 +2,41 @@
 
 class ProduitController extends ProduitManager
 {
-    public function ctrlGetProduits() {
-        ob_start();
+    public function ctrlGetProduits()
+    {
+        if ($this->isConnected()) {
+            ob_start();
 
-        $produits = $this->getProduits();
-        require 'views/produits/index.php';
+            $this->saveLastUrl();
+            $produits = $this->getProduits();
+            require 'views/produits/index.php';
 
-        $vue = ob_get_clean();
-        return $vue;
+            $vue = ob_get_clean();
+            return $vue;
+        }
     }
     public function ctrlGetProduitByCatId($id)
     {
-        ob_start();
+        if ($this->isConnected()) {
+            ob_start();
 
-        $produits = $this->getProduitByCatId($id);
-        $categorieModel = new CategorieManager();
-        $categorie = $categorieModel->getCategorieById($id);
-        require 'views/produits/listeByCat.php';
+            $this->saveLastUrl();
+            $produits = $this->getProduitByCatId($id);
+            $categorieModel = new CategorieManager();
+            $categorie = $categorieModel->getCategorieById($id);
+            require 'views/produits/listeByCat.php';
 
-        $vue = ob_get_clean();
-        return $vue;
+            $vue = ob_get_clean();
+            return $vue;
+        }
     }
 
     public function ctrlAddProduit($post = null)
     {
         if ($this->isAdmin()) {
             ob_start();
+
             if ($post != null) {
-                var_dump($post);
                 $nom = $post['nom'];
                 $description = $post['desc'];
                 $quantite = $post['qte'];
@@ -41,7 +48,10 @@ class ProduitController extends ProduitManager
             } else {
 
                 $categorieModel = new CategorieManager();
-                $categorie = $categorieModel->getCategorieById($_GET['cat']);
+                if (!empty($_GET['cat'])) {
+                    $categorie = $categorieModel->getCategorieById($_GET['cat']);
+                }
+                $categories = $categorieModel->getCategories();
                 require 'views/produits/formAjoutProduit.php';
             }
             $page = ob_get_clean();
@@ -58,7 +68,7 @@ class ProduitController extends ProduitManager
 
             $categorieModel = new CategorieManager();
             if ($post != null) {
-                $idProduit = $_GET['produit'];
+                $idProduit = $_GET['pro'];
                 $nom = $post['nom'];
                 $description = $post['desc'];
                 $quantite = $post['qte'];
@@ -66,10 +76,11 @@ class ProduitController extends ProduitManager
                 $categorie = $post['cat'];
                 $this->updateProduit($idProduit, $nom, $description, $quantite, $prix, $categorie);
 
-                header("Location: index.php?page=produits_cat&cat=$categorie");
+                $this->redirectNow("index.php?page=produits_cat&cat=$categorie");
             }
 
-            $produit = $this->getProduitById($_GET['produit']);
+            $produit = $this->getProduitById($_GET['pro']);
+            $currCategorie = $categorieModel->getCatByProduitId($produit['id']);
             $categories = $categorieModel->getCategories();
             require 'views/produits/formUpdateProduit.php';
             $page = ob_get_clean();

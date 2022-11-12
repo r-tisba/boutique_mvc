@@ -1,10 +1,9 @@
 <?php
-
 class BDD
 {
     // Propriétés de la base de données
     private $host = "localhost";
-    private $db_name = "boutique";
+    private $db_name = "boutique_mvc";
     private $username = "root";
     private $password = "";
 
@@ -22,6 +21,7 @@ class BDD
         }
     }
 
+    /* ------------------------------------- FONCTIONS GÉNÉRALES ------------------------------------- */
     public function redirectNow($url)
     {
         if (!headers_sent()) {
@@ -37,12 +37,25 @@ class BDD
             exit;
         }
     }
-    public function isAdmin() {
-        if(!empty($_SESSION)) {
-            if($_SESSION['idRole'] == '2') {
-                return true;
-            }   
+    public function isConnected()
+    {
+        if (!empty($_SESSION['pseudo'])) {
+            return true;
         }
         return false;
+    }
+    public function isAdmin()
+    {
+        if (!empty($_SESSION)) {
+            if ($_SESSION['idRole'] == '2') {
+                return true;
+            }
+        }
+        return false;
+    }
+    protected function saveLastUrl()
+    {
+        $last_url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $_SESSION['last_url'] = $last_url;
     }
 }

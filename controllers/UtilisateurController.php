@@ -14,6 +14,8 @@ class UtilisateurController extends UtilisateurManager
     {
         if ($this->isAdmin()) {
             ob_start();
+
+            $this->saveLastUrl();
             $utilisateurs = $this->getUtilisateurs();
 
             require 'views/utilisateurs/index.php';
@@ -215,6 +217,7 @@ class UtilisateurController extends UtilisateurManager
                     $_SESSION["email"] = $email;
                     $_SESSION["pseudo"] = $utilisateur["pseudo"];
                     $_SESSION["idRole"] = $utilisateur["role"];
+                    $_SESSION["last_url"] = "";
 
                     $this->redirectNow('index.php?page=accueil');
                 } else {

@@ -22,7 +22,7 @@ if (empty($_SESSION)) {
   <section class="py-3 text-center container">
     <div class="row py-lg-5">
       <div class="col-lg-6 col-md-8 mx-auto">
-        <h1 class="fw-dark">Boutique<h1>
+        <h1 class="fw-dark tLato t45">Boutique<h1>
             <p class="lead text-dark">Bienvenue <?= $_SESSION['pseudo']; ?> !</p>
       </div>
     </div>

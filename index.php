@@ -91,18 +91,18 @@ Autoload::load();
                 break;
             case 'update_produit':
                 $ctrl = new ProduitController();
-                if (!empty($_GET['produit'])) {
+                if (!empty($_GET['pro'])) {
                     if (!empty($_POST)) {
                         echo $ctrl->ctrlUpdateProduit($_POST);
                     } else {
                         echo $ctrl->ctrlUpdateProduit();
-                    }
+                    }   
                 }
                 break;
             case 'delete_produit':
                 $ctrl = new ProduitController();
-                if (!empty($_GET['produit'])) {
-                    echo $ctrl->ctrlDeleteProduit($_GET['produit']);
+                if (!empty($_GET['pro'])) {
+                    echo $ctrl->ctrlDeleteProduit($_GET['pro']);
                 }
                 break;
 
@@ -143,11 +143,11 @@ Autoload::load();
                 break;
         }
     } else {
-        header("Location: index.php?page=accueil");
+        $objetBdd = new Bdd();
+        $objetBdd->redirectNow("index.php?page=accueil");
     }
 
     ?>
-
 </div>
 </body>
 

@@ -2,24 +2,26 @@
 
 class CategorieController extends CategorieManager
 {
-    /**
-     * Récupère la liste des marques
-     */
     public function ctrlGetCategories()
     {
-        ob_start();
-        $categories = $this->getCategories();
+        if ($this->isConnected()) {
+            ob_start();
 
-        require 'views/categories/index.php';
-        $page = ob_get_clean();
+            $this->saveLastUrl();
+            $categories = $this->getCategories();
 
-        return $page;
+            require 'views/categories/index.php';
+            $page = ob_get_clean();
+
+            return $page;
+        }
     }
 
     public function ctrlAddCategorie($post = null)
     {
         if ($this->isAdmin()) {
             ob_start();
+
             if ($post != null) {
                 $nom = $post['nomCat'];
                 $this->createCategorie($nom);
@@ -39,6 +41,7 @@ class CategorieController extends CategorieManager
     {
         if ($this->isAdmin()) {
             ob_start();
+
             if ($post != null) {
                 $nom = $post['nomCat'];
                 $this->updateCategorie($id, $nom);
@@ -59,6 +62,8 @@ class CategorieController extends CategorieManager
     {
         if ($this->isAdmin()) {
             ob_start();
+
+            $this->saveLastUrl();
             $this->deleteCategorie($id);
             header("Location: index.php?page=liste_categories");
             $page = ob_get_clean();
